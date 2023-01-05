@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         print(obj.id)
 
         # catch pattern <key name>=<value>
-        pattern = re.compile(r'^(\w+)="?(([\w.-@]|\\")+)"?,?$')
+        pattern = re.compile(r'^(\w+)="?(([\w.@,-]|\\")+)"?,?$')
         arg_list = arg_list[1:]
         for param in arg_list:
 
