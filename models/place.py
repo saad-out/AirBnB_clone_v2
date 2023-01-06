@@ -22,16 +22,16 @@ class Place(BaseModel, Base):
         String(1024)
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     number_rooms = Column(
-        Integer, nullable=False, default=1
+        Integer, nullable=False, default=0
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     number_bathrooms = Column(
-        Integer, nullable=False, default=1
+        Integer, nullable=False, default=0
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     max_guest = Column(
-        Integer, nullable=False, default=1
+        Integer, nullable=False, default=0
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     price_by_night = Column(
-        Integer, nullable=False, default=1
+        Integer, nullable=False, default=0
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     latitude = Column(
         Float
