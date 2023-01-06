@@ -16,18 +16,18 @@ class User(BaseModel, Base):
         String(128), nullable=False
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     first_name = Column(
-        String(128)
+        String(128), nullable=True
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     last_name = Column(
-        String(128)
+        String(128), nullable=True
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
     places = relationship(
         'Place',
         cascade='all, delete, delete-orphan',
-        back_populates='user'
+        backref='user'
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
     reviews = relationship(
         'Review',
         cascade='all, delete, delete-orphan',
-        back_populates='user'
+        backref='user'
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
