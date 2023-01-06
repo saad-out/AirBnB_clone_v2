@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import re
+import shlex
 import sys
 from models.base_model import BaseModel
 from models import storage
@@ -241,88 +242,59 @@ class HBNBCommand(cmd.Cmd):
         """ """
         print("Usage: count <class_name>")
 
-    def do_update(self, args):
+    def do_update(self, arg):
         """ Updates a certain object with new info """
-        c_name = c_id = att_name = att_val = kwargs = ''
-
-        # isolate cls from id/args, ex: (<cls>, delim, <id/args>)
-        args = args.partition(" ")
-        if args[0]:
-            c_name = args[0]
-        else:  # class name not present
+        if not arg:
             print("** class name missing **")
             return
-        if c_name not in HBNBCommand.classes:  # class name invalid
+
+        # arg copy needed further down
+        arg_copy = str(arg)
+
+        args = shlex.split(arg)
+        if args[0] not in HBNBCommand.classes.keys():
             print("** class doesn't exist **")
             return
-
-        # isolate id from args
-        args = args[2].partition(" ")
-        if args[0]:
-            c_id = args[0]
-        else:  # id not present
+        elif len(args) == 1:
             print("** instance id missing **")
             return
 
-        # generate key from class and id
-        key = c_name + "." + c_id
+        for i in range(len(args)):
+            args[i] = args[i].strip(',')
+        all_obj = storage.all()
 
-        # determine if key is present
-        if key not in storage.all():
-            print("** no instance found **")
-            return
+        # catch dictionary pattern using RegEx
+        pattern = r'{(["\'](\w)+["\']: ?["\']?([\w.@,-]|\\")+["\']?,? ?)+}'
+        match = re.compile(pattern).search(arg_copy)
+        # match = pattern.search(arg_copy)
+        if match:
+            obj_dict = eval(match.group(0))
+            if type(obj_dict) is not dict:
+                return
+            key = args[0] + '.' + args[1].strip('"')
+            try:
+                obj = all_obj[key]
+                for k in obj_dict.keys():
+                    setattr(obj, k, obj_dict[k])
+                obj.save()
+                return
+            except KeyError:
+                print("** no instance found **")
+                return
 
-        # first determine if kwargs or args
-        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
-            kwargs = eval(args[2])
-            args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
-            for k, v in kwargs.items():
-                args.append(k)
-                args.append(v)
-        else:  # isolate args
-            args = args[2]
-            if args and args[0] == '\"':  # check for quoted arg
-                second_quote = args.find('\"', 1)
-                att_name = args[1:second_quote]
-                args = args[second_quote + 1:]
-
-            args = args.partition(' ')
-
-            # if att_name was not quoted arg
-            if not att_name and args[0] != ' ':
-                att_name = args[0]
-            # check for quoted val arg
-            if args[2] and args[2][0] == '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
-
-            # if att_val was not quoted arg
-            if not att_val and args[2]:
-                att_val = args[2].partition(' ')[0]
-
-            args = [att_name, att_val]
-
-        # retrieve dictionary of current objects
-        new_dict = storage.all()[key]
-
-        # iterate through attr names and values
-        for i, att_name in enumerate(args):
-            # block only runs on even iterations
-            if (i % 2 == 0):
-                att_val = args[i + 1]  # following item is value
-                if not att_name:  # check for att_name
+        for k, v in all_obj.items():
+            obj_name = v.__class__.__name__
+            obj_id = v.id
+            if obj_name == args[0] and obj_id == args[1].strip('"'):
+                if len(args) == 2:
                     print("** attribute name missing **")
-                    return
-                if not att_val:  # check for att_value
+                elif len(args) == 3:
                     print("** value missing **")
-                    return
-                # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
-
-                # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
-
-        new_dict.save()  # save updates to file
+                else:
+                    setattr(v, args[2], args[3])
+                    v.save()
+                return
+        print("** no instance found **")
 
     def help_update(self):
         """ Help information for the update class """
