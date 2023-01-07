@@ -125,14 +125,14 @@ class HBNBCommand(cmd.Cmd):
                 continue
 
             key = match.group(1)
-            val = match.group(2).strip('"').replace(r'\"', '"')
+            val = match.group(2).strip('"').replace('_', ' ')
             if key in HBNBCommand.types.keys():
                 try:
                     setattr(obj, key, HBNBCommand.types[key](val))
                 except Exception:
                     pass
             else:
-                setattr(obj, key, val)
+                setattr(obj, key, str(val))
 
         obj.save()
 
