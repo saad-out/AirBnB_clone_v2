@@ -40,7 +40,12 @@ class BaseModel:
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        obj_dict = self.__dict__
+        try:
+            del obj_dict['_sa_instance_state']
+        except KeyError:
+            pass
+        return '[{}] ({}) {}'.format(cls, self.id, obj_dict)
 
     def delete(self):
         """Deletes this BaseModel instance from the storage"""

@@ -176,28 +176,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """ Destroys a specified object """
-        new = args.partition(" ")
-        c_name = new[0]
-        c_id = new[2]
-        if c_id and ' ' in c_id:
-            c_id = c_id.partition(' ')[0]
-
-        if not c_name:
+        if not args:
             print("** class name missing **")
             return
 
-        if c_name not in HBNBCommand.classes:
+        args = args.split(' ')
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        if not c_id:
+        if len(args) == 1:
             print("** instance id missing **")
             return
 
-        key = c_name + "." + c_id
-
+        key = args[0] + "." + args[1]
         try:
-            del(storage.all()[key])
+            storage.all()[key].delete()
             storage.save()
         except KeyError:
             print("** no instance found **")

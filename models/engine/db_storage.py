@@ -50,11 +50,8 @@ class DBStorage:
 
     def delete(self, obj=None):
         """Removes an object from the storage database"""
-        if obj is not None:
-            self.__session.query(type(obj)).filter(
-                type(obj).id == obj.id).delete(
-                synchronize_session=False
-            )
+        if obj:
+            self.__session.delete(obj)
 
     def new(self, obj):
         """Adds new object to storage database"""
