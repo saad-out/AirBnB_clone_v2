@@ -81,7 +81,7 @@ class Place(BaseModel, Base):
                 'Amenity',
                 secondary=PlaceAmenity,
                 back_populates='place_amenities',
-                viewonly=True
+                viewonly=False
         )
     else:
         @property

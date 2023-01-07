@@ -19,5 +19,4 @@ class Amenity(BaseModel, Base):
             'Place',
             secondary=PlaceAmenity,
             back_populates='amenities',
-            viewonly=True
     ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
