@@ -3,11 +3,11 @@
 This module instantiates an object of class FileStorage/DBStorage
 """
 import os
-from models.engine.db_storage import DBStorage
-from models.engine.file_storage import FileStorage
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.engine.db_storage import DBStorage
+    storage = DBStorage()
+else:
+    from models.engine.file_storage import FileStorage
+    storage = FileStorage()
 
-
-storage = DBStorage() if os.getenv(
-    'HBNB_TYPE_STORAGE') == 'db' else FileStorage()
-"""A unique DBStorage/FileStorage instance for all models"""
 storage.reload()
