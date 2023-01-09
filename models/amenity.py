@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-import os
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+from models import st_type
 
-if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+if st_type == 'db':
     from models.place import PlaceAmenity
 
 
@@ -14,9 +14,10 @@ class Amenity(BaseModel, Base):
     __tablename__ = 'amenities'
     name = Column(
             String(128), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
-    place_amenities = relationship(
-            'Place',
-            secondary=PlaceAmenity,
-            back_populates='amenities',
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
+    ) if st_type == 'db' else ''
+    if st_type == 'db':
+        place_amenities = relationship(
+                'Place',
+                secondary=PlaceAmenity,
+                back_populates='amenities',
+        )
