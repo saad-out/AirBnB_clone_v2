@@ -5,6 +5,7 @@ import os
 import unittest
 from datetime import datetime
 from models import storage
+from models.user import User
 
 
 @unittest.skipIf(
