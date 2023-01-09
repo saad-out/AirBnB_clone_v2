@@ -2,7 +2,7 @@
 """ Test case for Amenity class """
 from tests.test_models.test_base_model import TestBasemodel
 from models.amenity import Amenity
-import os
+from models import st_type
 
 
 class TestAmenity(TestBasemodel):
@@ -18,5 +18,5 @@ class TestAmenity(TestBasemodel):
         """testing name type """
         new = self.value()
         self.assertEqual(type(new.name), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         st_type != 'db' else
                          type(None))

@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Test case for State class """
-import os
 from tests.test_models.test_base_model import TestBasemodel
 from models.state import State
+from models import st_type
 
 
 class TestState(TestBasemodel):
@@ -18,5 +18,5 @@ class TestState(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.name),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )

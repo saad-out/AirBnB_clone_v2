@@ -11,6 +11,7 @@ from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+from models import st_type
 
 
 class DBStorage:

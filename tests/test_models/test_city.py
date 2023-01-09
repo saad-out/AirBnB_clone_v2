@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """Test case for City class"""
-import os
-
 from models.city import City
 from tests.test_models.test_base_model import TestBasemodel
+from models import st_type
 
 
 class TestCity(TestBasemodel):
@@ -19,7 +18,7 @@ class TestCity(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.state_id),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )
 
     def test_name(self):
@@ -27,5 +26,5 @@ class TestCity(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.name),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )

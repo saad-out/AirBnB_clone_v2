@@ -6,10 +6,11 @@ import unittest
 from datetime import datetime
 from models import storage
 from models.user import User
+from models import st_type
 
 
 @unittest.skipIf(
-    os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+    st_type != 'db', 'DBStorage test')
 class TestDBStorage(unittest.TestCase):
     """ Class to test the database storage method """
     def test_new(self):

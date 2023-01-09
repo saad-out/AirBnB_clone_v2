@@ -2,7 +2,7 @@
 """ Test case for Review class """
 from tests.test_models.test_base_model import TestBasemodel
 from models.review import Review
-import os
+from models import st_type
 
 
 class TestReview(TestBasemodel):
@@ -18,19 +18,19 @@ class TestReview(TestBasemodel):
         """ testing review place_id attr"""
         new = self.value()
         self.assertEqual(type(new.place_id), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         st_type != 'db' else
                          type(None))
 
     def test_user_id(self):
         """ testing review user_id attr"""
         new = self.value()
         self.assertEqual(type(new.user_id), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         st_type != 'db' else
                          type(None))
 
     def test_text(self):
         """ testing review text attr"""
         new = self.value()
         self.assertEqual(type(new.text), str if
-                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         st_type != 'db' else
                          type(None))

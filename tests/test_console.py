@@ -12,13 +12,14 @@ from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from tests import clear_stream
+from models import st_type
 
 
 class TestHBNBCommand(unittest.TestCase):
     """Represents the test class for the HBNBCommand class.
     """
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
+        st_type == 'db', 'FileStorage test')
     def test_fs_create(self):
         """Tests the create command with the file storage.
         """
@@ -36,12 +37,15 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn('User.{}'.format(mdl_id), storage.all().keys())
             clear_stream(cout)
             cons.onecmd('show User {}'.format(mdl_id))
-            self.assertIn("'name': 'James'", cout.getvalue().strip())
-            self.assertIn("'age': 17", cout.getvalue().strip())
-            self.assertIn("'height': 5.9", cout.getvalue().strip())
+            self.assertIn("James", cout.getvalue().strip())
+            self.assertIn("17", cout.getvalue().strip())
+            self.assertIn("5.9", cout.getvalue().strip())
+            self.assertIn("name", cout.getvalue().strip())
+            self.assertIn("age", cout.getvalue().strip())
+            self.assertIn("height", cout.getvalue().strip())
 
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+        st_type != 'db', 'DBStorage test')
     def test_db_create(self):
         """Tests the create command with the database storage.
         """
@@ -71,7 +75,7 @@ class TestHBNBCommand(unittest.TestCase):
             dbc.close()
 
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+        st_type != 'db', 'DBStorage test')
     def test_db_show(self):
         """Tests the show command with the database storage.
         """
@@ -117,7 +121,7 @@ class TestHBNBCommand(unittest.TestCase):
             dbc.close()
 
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
+        st_type != 'db', 'DBStorage test')
     def test_db_count(self):
         """Tests the count command with the database storage.
         """

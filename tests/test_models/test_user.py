@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ Test case for user class """
-import os
 from sqlalchemy import Column
 from tests.test_models.test_base_model import TestBasemodel
 from models.user import User
+from models import st_type
 
 
 class TestUser(TestBasemodel):
@@ -19,7 +19,7 @@ class TestUser(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.first_name),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )
 
     def test_last_name(self):
@@ -27,7 +27,7 @@ class TestUser(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.last_name),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )
 
     def test_email(self):
@@ -35,7 +35,7 @@ class TestUser(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.email),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )
 
     def test_password(self):
@@ -43,5 +43,5 @@ class TestUser(TestBasemodel):
         new = self.value()
         self.assertEqual(
             type(new.password),
-            str if os.getenv('HBNB_TYPE_STORAGE') != 'db' else type(None)
+            str if st_type != 'db' else type(None)
         )
