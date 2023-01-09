@@ -2,19 +2,27 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 from datetime import datetime
-import os
 from sqlalchemy import Column, String, DATETIME
 from sqlalchemy.ext.declarative import declarative_base
 
+from models import st_type
 
-Base = declarative_base()
+if st_type == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), nullable=False, primary_key=True, unique=True)
-    created_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DATETIME, nullable=False, default=datetime.utcnow())
+
+    if st_type == 'db':
+        id = Column(
+                String(60), nullable=False, primary_key=True, unique=True)
+        created_at = Column(
+                DATETIME, nullable=False, default=datetime.utcnow())
+        updated_at = Column(
+                DATETIME, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -30,11 +38,11 @@ class BaseModel:
                         setattr(self, key, datetime.fromisoformat(value))
                     else:
                         setattr(self, key, value)
-            if not hasattr(kwargs, 'id'):
+            if 'id' not in kwargs.keys():
                 setattr(self, 'id', str(uuid.uuid4()))
-            if not hasattr(kwargs, 'created_at'):
+            if 'created_at' not in kwargs.keys():
                 setattr(self, 'created_at', datetime.now())
-            if not hasattr(kwargs, 'updated_at'):
+            if 'updated_at' not in kwargs.keys():
                 setattr(self, 'updated_at', datetime.now())
 
     def __str__(self):

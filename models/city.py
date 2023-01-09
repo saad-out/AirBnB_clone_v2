@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ City Module for HBNB project """
-import os
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+from models import st_type
 
 
 class City(BaseModel, Base):
@@ -11,16 +11,17 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     name = Column(
         String(128), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
+    ) if st_type == 'db' else ''
     state_id = Column(
         String(60), ForeignKey('states.id'), nullable=False
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ''
-    state = relationship(
-        'State',
-        back_populates='cities'
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
-    places = relationship(
+    ) if st_type == 'db' else ''
+    if st_type == 'db':
+        state = relationship(
+            'State',
+            back_populates='cities'
+        )
+        places = relationship(
             'Place',
             cascade='all, delete, delete-orphan',
             back_populates='cities'
-    ) if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
+        )
