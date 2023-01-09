@@ -96,4 +96,6 @@ class TestPlace(TestBasemodel):
     def test_amenity_ids(self):
         """Tests the type of amenity_ids."""
         new = self.value()
-        self.assertEqual(type(new.amenity_ids), list)
+        self.assertEqual(type(new.amenity_ids), list if
+                         os.getenv('HBNB_TYPE_STORAGE') != 'db' else
+                         type(None))
