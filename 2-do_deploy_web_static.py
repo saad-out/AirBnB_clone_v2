@@ -58,3 +58,5 @@ def do_deploy(archive_path):
                /data/web_static/current".format(folder))
     if not ret.succeeded:
         return False
+
+    return True
