@@ -43,7 +43,7 @@ def do_deploy(archive_path):
     if not ret.succeeded:
         return False
     ret = run("mv /data/web_static/releases/{}/web_static/* \
-               /data/web_static/releases/{}/".format(folder))
+               /data/web_static/releases/{}/".format(folder, folder))
     if not ret.succeeded:
         return False
     ret = run("rm -rf /data/web_static/releases/{}/web_static/".format(folder))
