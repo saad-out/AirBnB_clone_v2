@@ -79,6 +79,8 @@ def do_deploy(archive_path):
     if not ret.succeeded:
         return False
 
+    return True
+
 
 def deploy():
     """
