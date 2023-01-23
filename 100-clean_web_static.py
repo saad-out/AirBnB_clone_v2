@@ -23,18 +23,20 @@ def do_clean(number=0):
     if env.host_string == env.hosts[0]:  # execute once
         archives = local("ls -tr versions/ | tr ' ' '\\n' |\
                           head -n -{}".format(number), capture=True)
-        for archive in archives.split('\n'):
-            ret = local("rm versions/{}".format(archive))
-            if ret.failed:
-                return False
+        if archives != '':
+            for archive in archives.split('\n'):
+                ret = local("rm versions/{}".format(archive))
+                if ret.failed:
+                    return False
 
     # remove remote archives
     archives = run("ls -tr --hide=test /data/web_static/releases/ \
                     | tr ' ' '\\n' | head -n -{}".format(number))
-    for archive in archives.split('\n'):
-        ret = run("rm -rf /data/web_static/releases/\
-                   {}".format(archive.strip('\r')))
-        if ret.failed:
-            return False
+    if archives != '':
+        for archive in archives.split('\n'):
+            ret = run("rm -rf /data/web_static/releases/\
+                       {}".format(archive.strip('\r')))
+            if ret.failed:
+                return False
 
     return True
