@@ -24,12 +24,12 @@ def hbnb():
     return "HBNB"
 
 
-@app.route('/c/<text>', strict_slashes=False)
+@app.route('/c/<text>')
 def c_route(text):
     """
     Custom urls
     """
-    return "C is {}".format(text.replace('_', ' '))
+    return "C {}".format(text.replace('_', ' '))
 
 
 if __name__ == '__main__':
