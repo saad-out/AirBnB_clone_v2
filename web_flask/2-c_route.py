@@ -24,7 +24,7 @@ def hbnb():
     return "HBNB"
 
 
-@app.route('/c/<text>')
+@app.route('/c/<text>', strict_slashes=False)
 def c_route(text):
     """
     Custom urls
