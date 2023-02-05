@@ -7,6 +7,7 @@ from models import storage
 from models.state import State
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
@@ -17,7 +18,7 @@ def close_session(request):
     storage.close()
 
 
-@app.route('/states_list', strict_slashes=False)
+@app.route('/states_list')
 def states():
     """
     List all states
