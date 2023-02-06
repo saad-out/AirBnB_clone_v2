@@ -11,7 +11,7 @@ app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
-def close_session(error):
+def close_session(request):
     """
     Close session after each request
     """
